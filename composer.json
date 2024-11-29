@@ -3,6 +3,9 @@
     "description": "Interact with the E-conomic.com REST API using a strongly-typed PHP client library.",
     "type": "library",
     "license": "MIT",
+    "scripts": {
+        "test": "phpunit"
+    },
     "autoload": {
         "psr-4": {
             "Kevinfrom\\EconomicApi\\": "src/"
@@ -24,6 +27,7 @@
         "ext-curl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.4"
+        "phpunit/phpunit": "^11.4",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
