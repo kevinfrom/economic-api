@@ -6,7 +6,7 @@ use Kevinfrom\EconomicApi\Http\Config\AuthConfig;
 use Kevinfrom\EconomicApi\Http\Endpoint\EchoEndpoint;
 use PHPUnit\Framework\TestCase;
 
-class EchoEndpointTest extends TestCase
+final class EchoEndpointTest extends TestCase
 {
     private AuthConfig $authConfig;
 

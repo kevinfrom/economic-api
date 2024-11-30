@@ -2,11 +2,12 @@
 
 namespace Kevinfrom\EconomicApi\Tests\Feature\Http\Endpoint;
 
+use PHPUnit\Framework\TestCase;
 use Kevinfrom\EconomicApi\Http\Config\AuthConfig;
 use Kevinfrom\EconomicApi\Http\Endpoint\SelfEndpoint;
-use PHPUnit\Framework\TestCase;
+use Kevinfrom\EconomicApi\Data\Entity\SelfEntity;
 
-class SelfEndpointTest extends TestCase
+final class SelfEndpointTest extends TestCase
 {
     private AuthConfig $authConfig;
 
@@ -19,6 +20,10 @@ class SelfEndpointTest extends TestCase
 
     public function testSelfEndpointGet(): void
     {
-        $response = SelfEndpoint::get($this->authConfig);
+        $selfEntity = SelfEndpoint::get($this->authConfig);
+
+        $this->assertInstanceOf(SelfEntity::class, $selfEntity);
+        $this->assertIsInt($selfEntity->agreementNumber);
+        $this->assertIsString($selfEntity->self);
     }
 }

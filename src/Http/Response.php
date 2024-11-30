@@ -2,24 +2,29 @@
 
 namespace Kevinfrom\EconomicApi\Http;
 
-use Kevinfrom\EconomicApi\Data\Collection\Collection;
-
 final class Response
 {
-    private Collection $data;
-
-    public function __construct(private readonly bool $isOk, mixed $data)
+    public function __construct(private readonly bool $isOk, private readonly string $json)
     {
-        $this->data = new Collection((array)$data);
     }
 
+    /**
+     * Returns if the response is OK
+     *
+     * @return bool
+     */
     public function isOk(): bool
     {
         return $this->isOk;
     }
 
-    public function getData(): Collection
+    /**
+     * Returns the JSON response
+     *
+     * @return string
+     */
+    public function getJson(): string
     {
-        return $this->data;
+        return $this->json;
     }
 }
