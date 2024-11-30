@@ -13,8 +13,8 @@ trait Http
      *
      * @param HttpMethod $method The HTTP method to use
      * @param AuthConfig $authConfig The authentication configuration
-     * @param string     $endpoint The endpoint to call
-     * @param array      $queryOrData Query parameters or data to send
+     * @param string $endpoint The endpoint to call
+     * @param array $queryOrData Query parameters or data to send
      *
      * @return Response
      */
@@ -37,13 +37,13 @@ trait Http
             break;
             case HttpMethod::POST:
                 curl_setopt($ch, CURLOPT_POST, true);
-            break;
+                break;
             case HttpMethod::PUT:
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-            break;
+                break;
             case HttpMethod::PATCH:
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-            break;
+                break;
         }
 
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -56,12 +56,12 @@ trait Http
             'Content-Type: application/json',
         ]);
 
-        $response = curl_exec($ch);
+        $jsonResponse = curl_exec($ch);
 
         curl_close($ch);
 
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        return new Response($statusCode >= 200 && $statusCode <= 299, $response);
+        return new Response($statusCode >= 200 && $statusCode <= 299, $jsonResponse);
     }
 }

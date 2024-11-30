@@ -7,12 +7,12 @@ namespace Kevinfrom\EconomicApi\Tests\Unit\Collection;
 use Kevinfrom\EconomicApi\Data\Collection\Collection;
 use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends TestCase
+final class CollectionTest extends TestCase
 {
     public function testCreateNewCollection(): void
     {
         $expectedCount = 10;
-        $items         = array_fill(0, $expectedCount, 'item');
+        $items = array_fill(0, $expectedCount, 'item');
 
         $collection = new Collection($items);
 
@@ -27,7 +27,7 @@ class CollectionTest extends TestCase
     public function testCollectionCount(): void
     {
         $expectedCount = 10;
-        $items         = array_fill(0, $expectedCount, 'item');
+        $items = array_fill(0, $expectedCount, 'item');
 
         $collection = new Collection($items);
         $this->assertEquals($expectedCount, $collection->count());
@@ -36,7 +36,7 @@ class CollectionTest extends TestCase
     public function testAppend(): void
     {
         $expectedCount = 10;
-        $items         = array_fill(0, $expectedCount - 1, 'item');
+        $items = array_fill(0, $expectedCount - 1, 'item');
 
         $collection = new Collection($items);
 
