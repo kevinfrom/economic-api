@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace Kevinfrom\EconomicApi\Data\Collection;
 
+/**
+ * @template T
+ */
 final class Collection
 {
+    /**
+     * @param T[] $items
+     */
     public function __construct(private array $items)
     {
     }
@@ -23,7 +29,7 @@ final class Collection
     /**
      * Append an item to the collection.
      *
-     * @param mixed $item
+     * @param T $item
      *
      * @return $this
      */
@@ -37,7 +43,7 @@ final class Collection
     /**
      * Prepend an item to the collection.
      *
-     * @param mixed $item
+     * @param T $item
      *
      * @return $this
      */
@@ -52,9 +58,9 @@ final class Collection
     /**
      * Get the first item from the collection.
      *
-     * @return mixed
+     * @return T|null
      */
-    public function first(): mixed
+    public function first()
     {
         return $this->items[0] ?? null;
     }
@@ -62,9 +68,9 @@ final class Collection
     /**
      * Get the last item from the collection.
      *
-     * @return mixed
+     * @return T|null
      */
-    public function last(): mixed
+    public function last()
     {
         return $this->items[count($this->items) - 1] ?? null;
     }
@@ -74,7 +80,7 @@ final class Collection
      *
      * @param int $limit
      *
-     * @return self
+     * @return self<T>
      */
     public function limit(int $limit): self
     {
@@ -88,7 +94,7 @@ final class Collection
      *
      * @param callable $callback
      *
-     * @return self
+     * @return self<T>
      */
     public function filter(callable $callback): self
     {
@@ -100,7 +106,7 @@ final class Collection
     /**
      * Get items as an array.
      *
-     * @return array
+     * @return T[]
      */
     public function toArray(): array
     {
