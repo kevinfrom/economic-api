@@ -4,6 +4,8 @@ namespace Kevinfrom\EconomicApi\Tests\Unit\Mapper;
 
 use Kevinfrom\EconomicApi\Data\Entity\AgreementTypeEntity;
 use Kevinfrom\EconomicApi\Data\Entity\LanguageEntity;
+use Kevinfrom\EconomicApi\Data\Entity\ModuleEntity;
+use Kevinfrom\EconomicApi\Data\Entity\SelfEntity;
 use Kevinfrom\EconomicApi\Data\Entity\UserEntity;
 use PHPUnit\Framework\TestCase;
 use Kevinfrom\EconomicApi\Data\Mapper\EntityMapper;
@@ -85,5 +87,54 @@ final class EntityMapperTest extends TestCase
         $this->assertArrayHasKey('name', $agreementTypeArray);
         $this->assertEquals($this->agreementTypeNumber, $agreementTypeArray['agreementTypeNumber']);
         $this->assertEquals($this->name, $agreementTypeArray['name']);
+    }
+
+    public function testToEntityWithNestedArrayOfEntities(): void
+    {
+        $testData = [
+            'agreementNumber' => 1,
+            'self' => 'https://restapi.e-conomic.com/self',
+            'modules' => [
+                [
+                    'moduleNumber' => 1,
+                    'name' => 'Module 1',
+                    'self' => 'https://restapi.e-conomic.com/modules/1',
+                ],
+                [
+                    'moduleNumber' => 2,
+                    'name' => 'Module 2',
+                    'self' => 'https://restapi.e-conomic.com/modules/2',
+                ],
+                [
+                    'moduleNumber' => 3,
+                    'name' => 'Module 3',
+                    'self' => 'https://restapi.e-conomic.com/modules/3',
+                ],
+            ],
+        ];
+
+        $testDataJson = json_encode($testData);
+
+        $selfEntity = EntityMapper::toEntity(SelfEntity::class, $testDataJson);
+
+        $this->assertInstanceOf(SelfEntity::class, $selfEntity);
+        $this->assertEquals($testData['agreementNumber'], $selfEntity->agreementNumber);
+        $this->assertEquals($testData['self'], $selfEntity->self);
+
+        $this->assertCount(count($testData['modules']), $selfEntity->modules);
+        $this->assertInstanceOf(ModuleEntity::class, $selfEntity->modules[0]);
+        $this->assertEquals($testData['modules'][0]['moduleNumber'], $selfEntity->modules[0]->moduleNumber);
+        $this->assertEquals($testData['modules'][0]['name'], $selfEntity->modules[0]->name);
+        $this->assertEquals($testData['modules'][0]['self'], $selfEntity->modules[0]->self);
+
+        $this->assertEquals($testData['modules'][1]['moduleNumber'], $selfEntity->modules[1]->moduleNumber);
+        $this->assertEquals($testData['modules'][1]['name'], $selfEntity->modules[1]->name);
+        $this->assertEquals($testData['modules'][1]['self'], $selfEntity->modules[1]->self);
+        $this->assertInstanceOf(ModuleEntity::class, $selfEntity->modules[1]);
+
+        $this->assertEquals($testData['modules'][2]['moduleNumber'], $selfEntity->modules[2]->moduleNumber);
+        $this->assertEquals($testData['modules'][2]['name'], $selfEntity->modules[2]->name);
+        $this->assertEquals($testData['modules'][2]['self'], $selfEntity->modules[2]->self);
+        $this->assertInstanceOf(ModuleEntity::class, $selfEntity->modules[2]);
     }
 }

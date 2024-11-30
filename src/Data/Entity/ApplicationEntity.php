@@ -10,7 +10,7 @@ final class ApplicationEntity
      * @param string|null $name The name of the application. Default: null.
      * @param string|null $appPublicToken The public token of the application for use by other e-conomic customers. Default: null.
      * @param string|null $created The creation date of the application in the format YYYY-MM-DD. Default: null.
-     * @param array|null $requiredRoles The roles required to use this application. Default: null.
+     * @param RoleEntity[]|null $requiredRoles The roles required to use this application. Default: null.
      */
     public function __construct(
         public string  $self,

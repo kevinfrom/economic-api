@@ -17,7 +17,7 @@ final class SelfEntity
      * @param SettingsEntity|null $settings Additional settings.
      * @param string|null $companyAffiliation The company's affiliation.
      * @param bool|null $canSendElectronicInvoice Indicates if the company can send electronic invoices.
-     * @param array|null $modules The modules the company has active.
+     * @param ModuleEntity[]|null $modules The modules the company has active.
      */
     public function __construct(
         public int                    $agreementNumber,

@@ -3,10 +3,22 @@
 namespace Kevinfrom\EconomicApi\Data\Mapper;
 
 use InvalidArgumentException;
+use Kevinfrom\EconomicApi\Data\Entity\ModuleEntity;
+use Kevinfrom\EconomicApi\Data\Entity\RoleEntity;
 use ReflectionClass;
 
 final class EntityMapper
 {
+    /**
+     * Maps keys to entities.
+     *
+     * @var array<string, class-string>
+     */
+    private static array $keysToEntitiesArrayMap = [
+        'modules' => ModuleEntity::class,
+        'requiredRoles' => RoleEntity::class,
+    ];
+
     /**
      * Returns a JSON representation of an entity object.
      *
@@ -52,12 +64,14 @@ final class EntityMapper
                 $paramType = $param->getType();
                 $paramDefaultValue = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
 
-                // @TODO: Handle arrays of entities
-
-                if ($paramType && $paramType->isBuiltin() === false) {
-                    $args[] = self::toEntity($paramType->getName(), json_encode($data[$paramName]));
-                } elseif (isset($data[$paramName])) {
-                    $args[] = $data[$paramName];
+                if (isset($data[$paramName])) {
+                    if ($paramType && $paramType->isBuiltin() === false) {
+                        $args[] = self::toEntity($paramName, json_encode($data[$paramName]));
+                    } elseif (is_array($data[$paramName]) && isset(self::$keysToEntitiesArrayMap[$paramName])) {
+                        $args[] = array_map(fn($item) => self::toEntity(self::$keysToEntitiesArrayMap[$paramName], json_encode($item)), $data[$paramName]);
+                    } else {
+                        $args[] = $data[$paramName];
+                    }
                 } else {
                     $args[] = $paramDefaultValue;
                 }
