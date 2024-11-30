@@ -8,7 +8,7 @@ final class Response
 {
     private Collection $data;
 
-    public function __construct(private bool $isOk, mixed $data)
+    public function __construct(private readonly bool $isOk, mixed $data)
     {
         $this->data = new Collection((array)$data);
     }
