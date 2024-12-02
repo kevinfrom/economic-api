@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "test": "phpunit",
-        "coverage": "XDEBUG_MODE=coverage phpunit --coverage-text=.coverage.txt --path-coverage",
+        "coverage": "XDEBUG_MODE=coverage phpunit --coverage-clover=clover.xml --path-coverage",
         "ci": [
             "@test",
             "@coverage"
