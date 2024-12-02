@@ -4,7 +4,12 @@
     "type": "library",
     "license": "MIT",
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "coverage": "XDEBUG_MODE=coverage phpunit --coverage-text=.coverage.txt --path-coverage",
+        "ci": [
+            "@test",
+            "@coverage"
+        ]
     },
     "autoload": {
         "psr-4": {
