@@ -3,14 +3,34 @@
 namespace Kevinfrom\EconomicApi\Data\Mapper;
 
 use InvalidArgumentException;
+use Kevinfrom\EconomicApi\Data\Entity\AgreementTypeEntity;
+use Kevinfrom\EconomicApi\Data\Entity\ApplicationEntity;
+use Kevinfrom\EconomicApi\Data\Entity\BankInformationEntity;
+use Kevinfrom\EconomicApi\Data\Entity\CompanyEntity;
+use Kevinfrom\EconomicApi\Data\Entity\LanguageEntity;
 use Kevinfrom\EconomicApi\Data\Entity\ModuleEntity;
 use Kevinfrom\EconomicApi\Data\Entity\RoleEntity;
+use Kevinfrom\EconomicApi\Data\Entity\SettingsEntity;
+use Kevinfrom\EconomicApi\Data\Entity\UserEntity;
 use ReflectionClass;
 
 final class EntityMapper
 {
     /**
-     * Maps keys to entities.
+     * Maps keys to singular entities.
+     */
+    private static array $keyToEntityMap = [
+        'agreementType' => AgreementTypeEntity::class,
+        'user' => UserEntity::class,
+        'company' => CompanyEntity::class,
+        'bankInformation' => BankInformationEntity::class,
+        'application' => ApplicationEntity::class,
+        'settings' => SettingsEntity::class,
+        'language' => LanguageEntity::class,
+    ];
+
+    /**
+     * Maps keys to arrays of entities.
      *
      * @var array<string, class-string>
      */
@@ -65,8 +85,8 @@ final class EntityMapper
                 $paramDefaultValue = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
 
                 if (isset($data[$paramName])) {
-                    if ($paramType && $paramType->isBuiltin() === false) {
-                        $args[] = self::toEntity($paramName, json_encode($data[$paramName]));
+                    if ($paramType && $paramType->isBuiltin() === false && isset(self::$keyToEntityMap[$paramName])) {
+                        $args[] = self::toEntity(self::$keyToEntityMap[$paramName], json_encode($data[$paramName]));
                     } elseif (is_array($data[$paramName]) && isset(self::$keysToEntitiesArrayMap[$paramName])) {
                         $args[] = array_map(fn($item) => self::toEntity(self::$keysToEntitiesArrayMap[$paramName], json_encode($item)), $data[$paramName]);
                     } else {
