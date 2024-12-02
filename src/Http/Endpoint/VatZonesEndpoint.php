@@ -11,7 +11,7 @@ use Kevinfrom\EconomicApi\Http\Traits\Http;
 use Kevinfrom\EconomicApi\Data\Entity\VatZoneEntity;
 use RuntimeException;
 
-class VatZonesEndpoint
+final class VatZonesEndpoint
 {
     use Http;
 
