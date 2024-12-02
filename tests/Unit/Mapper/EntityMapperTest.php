@@ -3,12 +3,14 @@
 namespace Kevinfrom\EconomicApi\Tests\Unit\Mapper;
 
 use Kevinfrom\EconomicApi\Data\Entity\AgreementTypeEntity;
+use Kevinfrom\EconomicApi\Data\Entity\ApplicationEntity;
 use Kevinfrom\EconomicApi\Data\Entity\LanguageEntity;
 use Kevinfrom\EconomicApi\Data\Entity\ModuleEntity;
+use Kevinfrom\EconomicApi\Data\Entity\RoleEntity;
 use Kevinfrom\EconomicApi\Data\Entity\SelfEntity;
 use Kevinfrom\EconomicApi\Data\Entity\UserEntity;
-use PHPUnit\Framework\TestCase;
 use Kevinfrom\EconomicApi\Data\Mapper\EntityMapper;
+use PHPUnit\Framework\TestCase;
 
 final class EntityMapperTest extends TestCase
 {
@@ -23,7 +25,7 @@ final class EntityMapperTest extends TestCase
 
         $this->agreementTypeJson = json_encode([
             'agreementTypeNumber' => $this->agreementTypeNumber,
-            'name' => $this->name,
+            'name'                => $this->name,
         ]);
     }
 
@@ -49,15 +51,15 @@ final class EntityMapperTest extends TestCase
     public function testToNestedEntity(): void
     {
         $testData = [
-            'loginId' => 'userLoginId',
-            'email' => 'userEmail',
-            'name' => 'userName',
+            'loginId'         => 'userLoginId',
+            'email'           => 'userEmail',
+            'name'            => 'userName',
             'agreementNumber' => 1,
-            'language' => [
-                'self' => 'https://restapi.e-conomic.com/languages/2',
+            'language'        => [
+                'self'           => 'https://restapi.e-conomic.com/languages/2',
                 'languageNumber' => 2,
-                'name' => 'language',
-                'culture' => 'da-DK',
+                'name'           => 'language',
+                'culture'        => 'da-DK',
             ],
         ];
 
@@ -74,6 +76,60 @@ final class EntityMapperTest extends TestCase
         $this->assertInstanceOf(LanguageEntity::class, $userEntity->language);
         $this->assertEquals($testData['language']['languageNumber'], $userEntity->language->languageNumber);
         $this->assertEquals($testData['language']['name'], $userEntity->language->name);
+    }
+
+    public function testToArrayOfEntities(): void
+    {
+        $testData = [
+            'self'           => 'https://restapi.e-conomic.com/application/1',
+            'appNumber'      => 1,
+            'name'           => 'Application 1',
+            'appPublicToken' => 'publicToken',
+            'created'        => '2021-01-01',
+            'requiredRoles'  => [
+                [
+                    'roleNumber' => 1,
+                    'name'       => 'Role 1',
+                    'self'       => 'https://restapi.e-conomic.com/roles/1',
+                ],
+                [
+                    'roleNumber' => 2,
+                    'name'       => 'Role 2',
+                    'self'       => 'https://restapi.e-conomic.com/roles/2',
+                ],
+                [
+                    'roleNumber' => 3,
+                    'name'       => 'Role 3',
+                    'self'       => 'https://restapi.e-conomic.com/roles/3',
+                ],
+            ],
+        ];
+
+        $applicationEntity = EntityMapper::toEntity(ApplicationEntity::class, json_encode($testData));
+
+        $this->assertInstanceOf(ApplicationEntity::class, $applicationEntity);
+        $this->assertEquals($testData['self'], $applicationEntity->self);
+        $this->assertEquals($testData['appNumber'], $applicationEntity->appNumber);
+        $this->assertEquals($testData['name'], $applicationEntity->name);
+        $this->assertEquals($testData['appPublicToken'], $applicationEntity->appPublicToken);
+        $this->assertEquals($testData['created'], $applicationEntity->created);
+
+        $this->assertCount(count($testData['requiredRoles']), $applicationEntity->requiredRoles);
+
+        $this->assertInstanceOf(RoleEntity::class, $applicationEntity->requiredRoles[0]);
+        $this->assertEquals($testData['requiredRoles'][0]['roleNumber'], $applicationEntity->requiredRoles[0]->roleNumber);
+        $this->assertEquals($testData['requiredRoles'][0]['name'], $applicationEntity->requiredRoles[0]->name);
+        $this->assertEquals($testData['requiredRoles'][0]['self'], $applicationEntity->requiredRoles[0]->self);
+
+        $this->assertInstanceOf(RoleEntity::class, $applicationEntity->requiredRoles[1]);
+        $this->assertEquals($testData['requiredRoles'][1]['roleNumber'], $applicationEntity->requiredRoles[1]->roleNumber);
+        $this->assertEquals($testData['requiredRoles'][1]['name'], $applicationEntity->requiredRoles[1]->name);
+        $this->assertEquals($testData['requiredRoles'][1]['self'], $applicationEntity->requiredRoles[1]->self);
+
+        $this->assertInstanceOf(RoleEntity::class, $applicationEntity->requiredRoles[2]);
+        $this->assertEquals($testData['requiredRoles'][2]['roleNumber'], $applicationEntity->requiredRoles[2]->roleNumber);
+        $this->assertEquals($testData['requiredRoles'][2]['name'], $applicationEntity->requiredRoles[2]->name);
+        $this->assertEquals($testData['requiredRoles'][2]['self'], $applicationEntity->requiredRoles[2]->self);
     }
 
     public function testToArray(): void
@@ -93,22 +149,22 @@ final class EntityMapperTest extends TestCase
     {
         $testData = [
             'agreementNumber' => 1,
-            'self' => 'https://restapi.e-conomic.com/self',
-            'modules' => [
+            'self'            => 'https://restapi.e-conomic.com/self',
+            'modules'         => [
                 [
                     'moduleNumber' => 1,
-                    'name' => 'Module 1',
-                    'self' => 'https://restapi.e-conomic.com/modules/1',
+                    'name'         => 'Module 1',
+                    'self'         => 'https://restapi.e-conomic.com/modules/1',
                 ],
                 [
                     'moduleNumber' => 2,
-                    'name' => 'Module 2',
-                    'self' => 'https://restapi.e-conomic.com/modules/2',
+                    'name'         => 'Module 2',
+                    'self'         => 'https://restapi.e-conomic.com/modules/2',
                 ],
                 [
                     'moduleNumber' => 3,
-                    'name' => 'Module 3',
-                    'self' => 'https://restapi.e-conomic.com/modules/3',
+                    'name'         => 'Module 3',
+                    'self'         => 'https://restapi.e-conomic.com/modules/3',
                 ],
             ],
         ];
