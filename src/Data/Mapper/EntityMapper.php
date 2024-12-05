@@ -3,15 +3,27 @@
 namespace Kevinfrom\EconomicApi\Data\Mapper;
 
 use InvalidArgumentException;
+use Kevinfrom\EconomicApi\Data\Entity\AccountEntity;
 use Kevinfrom\EconomicApi\Data\Entity\AgreementTypeEntity;
 use Kevinfrom\EconomicApi\Data\Entity\ApplicationEntity;
 use Kevinfrom\EconomicApi\Data\Entity\BankInformationEntity;
 use Kevinfrom\EconomicApi\Data\Entity\CompanyEntity;
+use Kevinfrom\EconomicApi\Data\Entity\ContactEntity;
+use Kevinfrom\EconomicApi\Data\Entity\CustomerEntity;
+use Kevinfrom\EconomicApi\Data\Entity\CustomerGroupEntity;
+use Kevinfrom\EconomicApi\Data\Entity\DeliveryLocationEntity;
+use Kevinfrom\EconomicApi\Data\Entity\EmployeeEntity;
+use Kevinfrom\EconomicApi\Data\Entity\EmployeeGroupEntity;
 use Kevinfrom\EconomicApi\Data\Entity\LanguageEntity;
+use Kevinfrom\EconomicApi\Data\Entity\LayoutEntity;
 use Kevinfrom\EconomicApi\Data\Entity\ModuleEntity;
+use Kevinfrom\EconomicApi\Data\Entity\PaymentTermsEntity;
 use Kevinfrom\EconomicApi\Data\Entity\RoleEntity;
 use Kevinfrom\EconomicApi\Data\Entity\SettingsEntity;
 use Kevinfrom\EconomicApi\Data\Entity\UserEntity;
+use Kevinfrom\EconomicApi\Data\Entity\VatAccountEntity;
+use Kevinfrom\EconomicApi\Data\Entity\VatTypeEntity;
+use Kevinfrom\EconomicApi\Data\Entity\VatZoneEntity;
 use ReflectionClass;
 
 final class EntityMapper
@@ -20,13 +32,28 @@ final class EntityMapper
      * Maps keys to singular entities.
      */
     private static array $keyToEntityMap = [
-        'agreementType' => AgreementTypeEntity::class,
-        'user' => UserEntity::class,
-        'company' => CompanyEntity::class,
-        'bankInformation' => BankInformationEntity::class,
-        'application' => ApplicationEntity::class,
-        'settings' => SettingsEntity::class,
-        'language' => LanguageEntity::class,
+        'account'                 => AccountEntity::class,
+        'agreementType'           => AgreementTypeEntity::class,
+        'application'             => ApplicationEntity::class,
+        'attention'               => ContactEntity::class,
+        'bankInformation'         => BankInformationEntity::class,
+        'company'                 => CompanyEntity::class,
+        'contact'                 => ContactEntity::class,
+        'contraAccount'           => AccountEntity::class,
+        'customer'                => CustomerEntity::class,
+        'customerContact'         => ContactEntity::class,
+        'customerGroup'           => CustomerGroupEntity::class,
+        'defaultDeliveryLocation' => DeliveryLocationEntity::class,
+        'employee'                => EmployeeEntity::class,
+        'employeeGroup'           => EmployeeGroupEntity::class,
+        'language'                => LanguageEntity::class,
+        'layout'                  => LayoutEntity::class,
+        'paymentTerms'            => PaymentTermsEntity::class,
+        'settings'                => SettingsEntity::class,
+        'user'                    => UserEntity::class,
+        'vatAccount'              => VatAccountEntity::class,
+        'vatType'                 => VatTypeEntity::class,
+        'vatZone'                 => VatZoneEntity::class,
     ];
 
     /**
@@ -35,7 +62,7 @@ final class EntityMapper
      * @var array<string, class-string>
      */
     private static array $keysToEntitiesArrayMap = [
-        'modules' => ModuleEntity::class,
+        'modules'       => ModuleEntity::class,
         'requiredRoles' => RoleEntity::class,
     ];
 
@@ -43,6 +70,7 @@ final class EntityMapper
      * Returns a JSON representation of an entity object.
      *
      * @param object $entity
+     *
      * @return string
      */
     public static function toJSON(object $entity): string
@@ -55,7 +83,7 @@ final class EntityMapper
      *
      * @template T
      * @param class-string<T> $entityClass
-     * @param string $json
+     * @param string          $json
      *
      * @return T
      *
@@ -76,12 +104,12 @@ final class EntityMapper
         $args = [];
 
         $reflectionClass = new ReflectionClass($entityClass);
-        $constructor = $reflectionClass->getConstructor();
+        $constructor     = $reflectionClass->getConstructor();
 
         if ($constructor) {
             foreach ($constructor->getParameters() as $param) {
-                $paramName = $param->getName();
-                $paramType = $param->getType();
+                $paramName         = $param->getName();
+                $paramType         = $param->getType();
                 $paramDefaultValue = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
 
                 if (isset($data[$paramName])) {
@@ -105,6 +133,7 @@ final class EntityMapper
      * Maps an entity object to an associative array.
      *
      * @param string|object $entity
+     *
      * @return array
      */
     public static function toArray(string|object $entity): array
