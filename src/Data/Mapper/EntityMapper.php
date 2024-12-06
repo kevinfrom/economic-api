@@ -9,6 +9,7 @@ use Kevinfrom\EconomicApi\Data\Entity\ApplicationEntity;
 use Kevinfrom\EconomicApi\Data\Entity\BankInformationEntity;
 use Kevinfrom\EconomicApi\Data\Entity\CompanyEntity;
 use Kevinfrom\EconomicApi\Data\Entity\ContactEntity;
+use Kevinfrom\EconomicApi\Data\Entity\CurrencyEntity;
 use Kevinfrom\EconomicApi\Data\Entity\CustomerEntity;
 use Kevinfrom\EconomicApi\Data\Entity\CustomerGroupEntity;
 use Kevinfrom\EconomicApi\Data\Entity\DeliveryLocationEntity;
@@ -40,6 +41,7 @@ final class EntityMapper
         'company'                 => CompanyEntity::class,
         'contact'                 => ContactEntity::class,
         'contraAccount'           => AccountEntity::class,
+        'currency'                => CurrencyEntity::class,
         'customer'                => CustomerEntity::class,
         'customerContact'         => ContactEntity::class,
         'customerGroup'           => CustomerGroupEntity::class,
@@ -98,6 +100,7 @@ final class EntityMapper
         }
 
         if (!is_array($data)) {
+            var_dump(compact('entityClass', 'data'));
             throw new InvalidArgumentException('JSON must be an array');
         }
 
