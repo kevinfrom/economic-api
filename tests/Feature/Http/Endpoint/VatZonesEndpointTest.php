@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Kevinfrom\EconomicApi\Http\Endpoint\VatZonesEndpoint;
 use Kevinfrom\EconomicApi\Data\Entity\VatZoneEntity;
 
-class VatZonesEndpointTest extends TestCase
+final class VatZonesEndpointTest extends TestCase
 {
     private AuthConfig $authConfig;
 

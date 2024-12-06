@@ -8,7 +8,7 @@ use Kevinfrom\EconomicApi\Http\Config\AuthConfig;
 use Kevinfrom\EconomicApi\Http\Endpoint\CurrenciesEndpoint;
 use PHPUnit\Framework\TestCase;
 
-class CurrenciesEndpointTest extends TestCase
+final class CurrenciesEndpointTest extends TestCase
 {
     private AuthConfig $authConfig;
 

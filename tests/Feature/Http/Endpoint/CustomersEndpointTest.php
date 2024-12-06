@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Kevinfrom\EconomicApi\Http\Endpoint\CustomersEndpoint;
 use Kevinfrom\EconomicApi\Data\Entity\CustomerEntity;
 
-class CustomersEndpointTest extends TestCase
+final class CustomersEndpointTest extends TestCase
 {
     private AuthConfig $authConfig;
 
